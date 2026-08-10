@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/*
+ * デザイントークン: 雪国・農村を想起させる配色
+ * snow   = 雪白(基調)
+ * forest = 深緑(杉・田畑 / プライマリ)
+ * ainezu = 藍鼠(雪国の空 / テキスト)
+ * rice   = 稲穂(アクセント)
+ */
+@theme {
+  --color-snow-50: #f8fafb;
+  --color-snow-100: #eef3f6;
+  --color-snow-200: #dde7ec;
+  --color-snow-300: #c4d4dc;
+
+  --color-forest-50: #f1f7f3;
+  --color-forest-100: #e0eee5;
+  --color-forest-200: #c0dccb;
+  --color-forest-500: #3d7f5f;
+  --color-forest-600: #2f6b4f;
+  --color-forest-700: #265842;
+  --color-forest-800: #1e4735;
+
+  --color-ainezu-100: #e3ebef;
+  --color-ainezu-200: #c3d2da;
+  --color-ainezu-400: #7d95a3;
+  --color-ainezu-500: #5b7585;
+  --color-ainezu-600: #48606e;
+  --color-ainezu-700: #384f5c;
+  --color-ainezu-900: #22323c;
+
+  --color-rice-100: #faf1d8;
+  --color-rice-200: #f5e4b3;
+  --color-rice-300: #f1d78e;
+  --color-rice-400: #e9c46a;
+
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic",
+    sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-snow-50);
+  color: var(--color-ainezu-900);
+  overflow-wrap: anywhere;
+}
+
+/* アクセシビリティ: キーボードフォーカスを明確に */
+:focus-visible {
+  outline: 3px solid var(--color-forest-500);
+  outline-offset: 2px;
+}
+
+/* FAQ アコーディオンの開閉マーク */
+details.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+details.faq-item summary::after {
+  content: "+";
+  font-size: 1.25rem;
+  color: var(--color-forest-600);
+  flex-shrink: 0;
+}
+details.faq-item[open] summary::after {
+  content: "−";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
