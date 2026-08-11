@@ -1,13 +1,9 @@
 import Image from "next/image";
 import { Notice } from "@/components/admin/Notice";
+import { PhotoUploadForm } from "@/components/admin/PhotoUploadForm";
 import { PublishControls } from "@/components/admin/PublishControls";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import {
-  deletePhoto,
-  movePhoto,
-  updatePhotoAlt,
-  uploadPhoto,
-} from "@/lib/actions/photos";
+import { deletePhoto, movePhoto, updatePhotoAlt } from "@/lib/actions/photos";
 import { requireStaff } from "@/lib/auth";
 import { photoPublicUrl } from "@/lib/content";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -101,73 +97,19 @@ export default async function AdminPhotosPage({
       {/* アップロードフォーム */}
       <section className="rounded-2xl border border-snow-200 bg-white p-5">
         <h2 className="font-bold text-ainezu-900">写真をアップロード</h2>
-        <form
-          action={uploadPhoto}
-          className="mt-3 grid gap-3 sm:grid-cols-2"
-        >
-          <input type="hidden" name="back" value={BACK} />
-          <label className="block text-sm">
-            <span className="font-medium text-ainezu-700">用途</span>
-            <select
-              name="slot"
-              required
-              className="mt-1 w-full rounded-lg border border-snow-300 px-3 py-2 text-sm"
-            >
-              {SLOT_DEFS.map((def) => (
-                <option key={def.slot} value={def.slot}>
-                  {def.label}(推奨比率 {def.ratio})
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block text-sm">
-            <span className="font-medium text-ainezu-700">
-              対象の活動(活動カード・活動詳細のみ)
-            </span>
-            <select
-              name="activity_id"
-              className="mt-1 w-full rounded-lg border border-snow-300 px-3 py-2 text-sm"
-            >
-              <option value="">-- 選択してください --</option>
-              {activities.map((activity) => (
-                <option key={activity.id} value={activity.id}>
-                  {activity.draft?.title ?? activity.slug}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block text-sm">
-            <span className="font-medium text-ainezu-700">画像ファイル</span>
-            <input
-              type="file"
-              name="file"
-              required
-              accept="image/jpeg,image/png,image/webp"
-              className="mt-1 w-full rounded-lg border border-snow-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="font-medium text-ainezu-700">
-              代替テキスト(写真の内容説明)
-            </span>
-            <input
-              type="text"
-              name="alt"
-              required
-              maxLength={200}
-              placeholder="例: 棚田で田植えをするメンバー"
-              className="mt-1 w-full rounded-lg border border-snow-300 px-3 py-2 text-sm"
-            />
-          </label>
-          <div>
-            <button
-              type="submit"
-              className="rounded-full bg-forest-600 px-6 py-2 text-sm font-bold text-white hover:bg-forest-700"
-            >
-              アップロード
-            </button>
-          </div>
-        </form>
+        <div className="mt-3">
+          <PhotoUploadForm
+            slotOptions={SLOT_DEFS.map((def) => ({
+              slot: def.slot,
+              label: def.label,
+              ratio: def.ratio,
+            }))}
+            activityOptions={activities.map((activity) => ({
+              id: activity.id,
+              title: activity.draft?.title ?? activity.slug,
+            }))}
+          />
+        </div>
       </section>
 
       {/* 用途別の写真一覧 */}

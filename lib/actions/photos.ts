@@ -1,14 +1,9 @@
 "use server";
 
-import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
 import { requireRepresentative, requireStaff } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import {
-  ALLOWED_IMAGE_TYPES,
-  MAX_IMAGE_SIZE,
-  photoAltSchema,
-} from "@/lib/validation";
+import { photoAltSchema } from "@/lib/validation";
 import { errorMessage, resultUrl, safeBack } from "./helpers";
 
 const PHOTO_SLOTS = [
@@ -19,68 +14,69 @@ const PHOTO_SLOTS = [
   "activity_detail",
 ] as const;
 
-export async function uploadPhoto(formData: FormData): Promise<void> {
-  const back = safeBack(formData.get("back"));
-  let result: { ok?: string; error?: string };
+export interface RegisterPhotoInput {
+  slot: string;
+  activityId: string;
+  storagePath: string;
+  alt: string;
+}
+
+export interface RegisterPhotoResult {
+  ok?: string;
+  error?: string;
+}
+
+/**
+ * 写真データ(メタ情報)の登録。
+ * 画像本体はブラウザから直接Supabase Storageへアップロード済みで、
+ * ここでは保存先パスをphotosテーブルに記録するだけ(Vercelのサーバー関数の
+ * リクエストサイズ上限を画像バイナリが経由しないようにするため)。
+ */
+export async function registerPhoto(
+  input: RegisterPhotoInput
+): Promise<RegisterPhotoResult> {
   try {
     const session = await requireStaff();
-    const file = formData.get("file");
-    const slot = String(formData.get("slot") ?? "");
-    const activityId = String(formData.get("activity_id") ?? "");
-    const alt = photoAltSchema.parse(String(formData.get("alt") ?? ""));
+    const alt = photoAltSchema.parse(input.alt);
+    const slot = input.slot;
 
-    if (!(file instanceof File) || file.size === 0) {
-      throw new Error("画像ファイルを選択してください");
-    }
-    const ext = ALLOWED_IMAGE_TYPES[file.type];
-    if (!ext) {
-      throw new Error("JPG / PNG / WebP の画像のみアップロードできます");
-    }
-    if (file.size > MAX_IMAGE_SIZE) {
-      throw new Error("ファイルサイズは10MB以下にしてください");
-    }
     if (!(PHOTO_SLOTS as readonly string[]).includes(slot)) {
       throw new Error("写真の用途が正しくありません");
     }
-    const isActivitySlot = slot === "activity_card" || slot === "activity_detail";
-    if (isActivitySlot && !activityId) {
+    const isActivitySlot =
+      slot === "activity_card" || slot === "activity_detail";
+    if (isActivitySlot && !input.activityId) {
       throw new Error("対象の活動を選択してください");
+    }
+    if (!input.storagePath || !input.storagePath.startsWith(`${slot}/`)) {
+      throw new Error("アップロードされたファイルが確認できません");
     }
 
     const supabase = await createSupabaseServerClient();
-    const storagePath = `${slot}/${randomUUID()}.${ext}`;
-    const { error: uploadError } = await supabase.storage
-      .from("photos")
-      .upload(storagePath, file, {
-        contentType: file.type,
-        cacheControl: "31536000",
-      });
-    if (uploadError) throw new Error(uploadError.message);
-
     let countQuery = supabase
       .from("photos")
       .select("id", { count: "exact", head: true })
       .eq("slot", slot);
-    if (isActivitySlot) countQuery = countQuery.eq("activity_id", activityId);
+    if (isActivitySlot)
+      countQuery = countQuery.eq("activity_id", input.activityId);
     const { count } = await countQuery;
 
     const { error: insertError } = await supabase.from("photos").insert({
       slot,
-      activity_id: isActivitySlot ? activityId : null,
-      storage_path: storagePath,
+      activity_id: isActivitySlot ? input.activityId : null,
+      storage_path: input.storagePath,
       alt,
       sort_order: (count ?? 0) + 1,
       status: "draft",
       uploaded_by: session.userId,
     });
     if (insertError) throw new Error(insertError.message);
-    result = {
+    return {
       ok: "写真をアップロードしました(下書き)。代表者が公開すると表示されます",
     };
   } catch (e) {
-    result = { error: errorMessage(e) };
+    return { error: errorMessage(e) };
   }
-  redirect(resultUrl(back, result));
 }
 
 export async function updatePhotoAlt(formData: FormData): Promise<void> {
