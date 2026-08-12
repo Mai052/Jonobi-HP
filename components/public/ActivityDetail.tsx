@@ -38,14 +38,14 @@ export function ActivityDetail({
       </nav>
 
       <div className="mt-4 flex items-center gap-3">
-        <h1 className="text-3xl font-bold text-ainezu-900">{activity.title}</h1>
+        <h1 className="text-3xl font-bold tracking-wide text-ainezu-900">{activity.title}</h1>
         {activity.season && (
           <span className="rounded-full bg-rice-100 px-3 py-1 text-xs font-medium text-ainezu-700">
             {activity.season}
           </span>
         )}
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-ainezu-600">
+      <p className="mt-3 text-base leading-loose text-ainezu-600">
         {activity.summary}
       </p>
 
@@ -57,7 +57,7 @@ export function ActivityDetail({
         priority
       />
 
-      <div className="prose-sm mt-8 whitespace-pre-line text-[15px] leading-relaxed text-ainezu-700">
+      <div className="mt-8 whitespace-pre-line text-base leading-loose text-ainezu-700">
         {activity.body}
       </div>
 
@@ -77,10 +77,10 @@ export function ActivityDetail({
 
       {/* 読了後のCTA */}
       <div className="mt-12 rounded-2xl bg-forest-50 p-6 text-center sm:p-8">
-        <h2 className="text-lg font-bold text-ainezu-900">
+        <h2 className="text-lg font-bold tracking-wide text-ainezu-900">
           {activity.title}に少しでも興味が湧いたら
         </h2>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ainezu-600">
+        <p className="mx-auto mt-2 max-w-md text-base leading-loose text-ainezu-600">
           活動の詳しい日程や持ち物など、気になることはInstagramのDMで気軽に聞いてください!
         </p>
         <div className="mt-5 flex justify-center">
@@ -90,7 +90,7 @@ export function ActivityDetail({
 
       {otherActivities.length > 0 && (
         <div className="mt-12">
-          <h2 className="text-lg font-bold text-ainezu-900">ほかの活動も見る</h2>
+          <h2 className="text-lg font-bold tracking-wide text-ainezu-900">ほかの活動も見る</h2>
           <div className="mt-4 grid grid-cols-2 gap-3">
             {otherActivities.map((other) => (
               <Link
