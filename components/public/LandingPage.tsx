@@ -20,7 +20,7 @@ function SectionTitle({
       <p className="text-xs font-bold uppercase tracking-widest text-forest-500">
         {en}
       </p>
-      <h2 className="mt-1 text-2xl font-bold text-ainezu-900 sm:text-3xl">
+      <h2 className="mt-1 text-2xl font-bold tracking-wide text-ainezu-900 sm:text-3xl">
         {ja}
       </h2>
       <div className="mx-auto mt-3 h-1 w-12 rounded-full bg-rice-400" />
@@ -82,12 +82,12 @@ export function LandingPage({
         >
           <div className="mx-auto max-w-5xl">
             <p className="text-sm font-medium opacity-90">{SITE_NAME}</p>
-            <h1 className="mt-2 text-2xl font-bold leading-snug sm:text-4xl">
+            <h1 className="mt-2 text-2xl font-bold leading-snug tracking-wide sm:text-4xl">
               {data.hero.catchcopy}
             </h1>
             <Paragraphs
               text={data.hero.description}
-              className="mt-3 max-w-2xl text-sm leading-relaxed opacity-95 sm:text-base"
+              className="mt-3 max-w-2xl text-base leading-loose opacity-95"
             />
             <div className="mt-6">
               <InstagramCta href={data.instagramUrl} position="hero" />
@@ -108,24 +108,24 @@ export function LandingPage({
           />
           <div className="space-y-6">
             <div>
-              <h3 className="font-bold text-forest-700">活動の目的</h3>
+              <h3 className="font-bold tracking-wide text-forest-700">活動の目的</h3>
               <Paragraphs
                 text={data.about.purpose}
-                className="mt-2 text-sm leading-relaxed text-ainezu-700"
+                className="mt-2 text-base leading-loose text-ainezu-700"
               />
             </div>
             <div>
-              <h3 className="font-bold text-forest-700">まつだい地域との関係</h3>
+              <h3 className="font-bold tracking-wide text-forest-700">まつだい地域との関係</h3>
               <Paragraphs
                 text={data.about.relation}
-                className="mt-2 text-sm leading-relaxed text-ainezu-700"
+                className="mt-2 text-base leading-loose text-ainezu-700"
               />
             </div>
             <div>
-              <h3 className="font-bold text-forest-700">私たちの特徴</h3>
+              <h3 className="font-bold tracking-wide text-forest-700">私たちの特徴</h3>
               <Paragraphs
                 text={data.about.features}
-                className="mt-2 text-sm leading-relaxed text-ainezu-700"
+                className="mt-2 text-base leading-loose text-ainezu-700"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export function LandingPage({
       <section id="activities" className="bg-snow-100 py-16">
         <div className="mx-auto max-w-5xl px-4">
           <SectionTitle en="Activities" ja="活動紹介" />
-          <p className="mx-auto mb-8 max-w-xl text-center text-sm text-ainezu-600">
+          <p className="mx-auto mb-8 max-w-xl text-center text-base leading-loose text-ainezu-600">
             気になる活動をタップすると、写真と文章で詳しく紹介します。
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -164,7 +164,7 @@ export function LandingPage({
                       </span>
                     )}
                   </div>
-                  <p className="mt-2 text-sm leading-relaxed text-ainezu-600">
+                  <p className="mt-2 text-base leading-loose text-ainezu-600">
                     {activity.summary}
                   </p>
                   <p className="mt-3 text-sm font-bold text-forest-600 group-hover:underline">
@@ -180,7 +180,7 @@ export function LandingPage({
       {/* 4. 活動頻度・参加方法 */}
       <section id="join" className="mx-auto max-w-5xl px-4 py-16">
         <SectionTitle en="How to Join" ja="活動頻度・参加方法" />
-        <p className="mx-auto mb-8 max-w-xl text-center text-sm text-ainezu-600">
+        <p className="mx-auto mb-8 max-w-xl text-center text-base leading-loose text-ainezu-600">
           「どのくらい時間を取られるの?」という不安にお答えします。
           自分のペースで参加できるサークルです。
         </p>
@@ -190,10 +190,10 @@ export function LandingPage({
               key={item.label}
               className="rounded-2xl border border-snow-200 bg-white p-5"
             >
-              <dt className="text-sm font-bold text-forest-700">
+              <dt className="text-xs font-bold uppercase tracking-wide text-forest-500">
                 {item.label}
               </dt>
-              <dd className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ainezu-700">
+              <dd className="mt-2 whitespace-pre-line text-base font-medium leading-loose text-ainezu-900">
                 {item.value}
               </dd>
             </div>
@@ -203,7 +203,7 @@ export function LandingPage({
 
       {/* 5. FAQ */}
       <section id="faq" className="bg-snow-100 py-16">
-        <div className="mx-auto max-w-3xl px-4">
+        <div className="mx-auto max-w-2xl px-4">
           <SectionTitle en="FAQ" ja="よくある質問" />
           <div className="space-y-3">
             {data.faqs.map((faq, index) => (
@@ -211,10 +211,10 @@ export function LandingPage({
                 key={index}
                 className="faq-item rounded-2xl bg-white p-5 shadow-sm"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-bold text-ainezu-900">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-bold tracking-wide text-ainezu-900">
                   <span>Q. {faq.question}</span>
                 </summary>
-                <p className="mt-3 whitespace-pre-line border-t border-snow-200 pt-3 text-sm leading-relaxed text-ainezu-700">
+                <p className="mt-3 whitespace-pre-line border-t border-snow-200 pt-3 text-base leading-loose text-ainezu-700">
                   {faq.answer}
                 </p>
               </details>
@@ -224,7 +224,7 @@ export function LandingPage({
       </section>
 
       {/* 6. お知らせ・次回活動 */}
-      <section id="news" className="mx-auto max-w-3xl px-4 py-16">
+      <section id="news" className="mx-auto max-w-2xl px-4 py-16">
         <SectionTitle en="News" ja="お知らせ・次回活動" />
         <ul className="space-y-4">
           {data.announcements.map((announcement) => (
@@ -237,10 +237,10 @@ export function LandingPage({
                   {formatDate(announcement.event_date)}
                 </p>
               )}
-              <h3 className="mt-1 font-bold text-ainezu-900">
+              <h3 className="mt-1 font-bold tracking-wide text-ainezu-900">
                 {announcement.title}
               </h3>
-              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ainezu-700">
+              <p className="mt-2 whitespace-pre-line text-base leading-loose text-ainezu-700">
                 {announcement.body}
               </p>
             </li>
@@ -257,10 +257,10 @@ export function LandingPage({
             className="mx-auto aspect-[16/9] w-full max-w-xl"
             sizes="(min-width: 640px) 576px, 100vw"
           />
-          <h2 className="mt-8 text-2xl font-bold">
+          <h2 className="mt-8 text-2xl font-bold tracking-wide">
             まずは気軽にDMで話を聞いてみませんか?
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed opacity-90">
+          <p className="mx-auto mt-3 max-w-md text-base leading-loose opacity-90">
             「ちょっと興味がある」だけで大歓迎。活動の雰囲気や参加方法など、
             どんな質問でもInstagramのDMでお答えします。
           </p>
